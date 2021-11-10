@@ -1,0 +1,23 @@
+.StageDoor0 {
+  width: 100%;
+  min-width: 1120px;
+  display: flex;
+}
+
+.StageDoor0 > section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.Layer0 {
+  margin-left: 9px;
+}
+
+.Layer1 {
+  margin-left: -100%;
+}
+
+.Layer2 {
+  margin-left: -100%;
+}
