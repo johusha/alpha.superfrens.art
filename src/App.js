@@ -10,13 +10,7 @@ function App() {
     useWeb3();
 
   useEffect(() => {
-    console.log(
-      loading,
-      walletAddress,
-      nftPrice,
-      how_many_nfts,
-      saleStarted
-    );
+    console.log(loading, walletAddress, nftPrice, how_many_nfts, saleStarted);
   }, [web3, loading, walletAddress, nftPrice, how_many_nfts, saleStarted]);
 
   return (
