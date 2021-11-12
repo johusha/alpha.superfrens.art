@@ -1,0 +1,52 @@
+.wallet-connect {
+  z-index: 10;
+  padding: 16px;
+  color: white;
+  display: flex;
+  text-align: right;
+  position: fixed;
+  width: 100%;
+  font-size: 14px;
+  transition: color 2s, height 4s;
+  flex-wrap: wrap;
+  align-content: stretch;
+  justify-content: flex-end;
+}
+
+.wallet-connect > .button {
+  height: 40px;
+  width: 80px;
+  border: 2px solid white;
+  padding: 8px;
+  border-radius: 12px;
+  font-size: 14px;
+  opacity: 0.25;
+}
+
+.wallet-connect > .button:hover {
+  border-color: greenyellow;
+  opacity: 1;
+}
+
+.wallet-connect > .address-wrapper {
+  color: white;
+  opacity: 0.2;
+}
+
+.wallet-connect > .address-wrapper:hover {
+  opacity: 1;
+}
+
+.wallet-connect .address {
+  color: greenyellow;
+}
+
+.loading {
+  border: 4px solid transparent; /* Light grey */
+  border-top: 4px solid greenyellow; /* Blue */
+  border-radius: 50%;
+  text-align: center;
+  width: 48px;
+  height: 48px;
+  animation: spin 2s linear infinite;
+}
