@@ -4,14 +4,18 @@ import { useEffect, useState } from "react";
 
 export function useWeb3() {
   const [web3, setWeb3] = useState();
-  const [loading, setLoading] = useState(false);
+  // loading can be undefined, null, true, false.
+  // undefined is default
+  // true for when connecting to web3
+  // false for when finished connecting to web3
+  // null for when an error occurred when connecting to web3
+  const [loading, setLoading] = useState(undefined);
   const [signedIn, setSignedIn] = useState(false);
   const [walletAddress, setWalletAddress] = useState(null);
+  const [contract, setContract] = useState(null);
 
   // FOR MINTING
   const [how_many_nfts, set_how_many_nfts] = useState(1);
-
-  const [contract, setContract] = useState(null);
 
   // INFO FROM SMART Contract
 
@@ -23,67 +27,74 @@ export function useWeb3() {
 
   useEffect(() => {
     async function connect() {
-      try {
-        setLoading(true);
-
-        const providerOptions = {
-          /* See Provider Options Section */
-          // https://github.com/Web3Modal/web3modal
-        };
-        const web3Modal = new Web3Modal({
-          network: "mainnet", // optional
-          cacheProvider: true, // optional
-          providerOptions, // required
-        });
-
-        const provider = await web3Modal.connect();
-
-        const web3 = new Web3(provider);
-
-        if (web3.eth) {
-          await handleConnect(web3.eth);
-
-          // Subscribe to accounts change
-          provider.on("accountsChanged", (accounts) => {
-            handleAccountsChanged(web3, accounts);
+      if (loading === undefined) {
+        try {
+          setLoading(true);
+          const providerOptions = {
+            /* See Provider Options Section */
+            // https://github.com/Web3Modal/web3modal
+          };
+          const web3Modal = new Web3Modal({
+            network: "mainnet", // optional
+            cacheProvider: true, // optional
+            providerOptions, // required
           });
 
-          // Subscribe to chainId change
-          provider.on("chainChanged", (chainId) => {
-            window.location.reload();
-          });
+          const provider = await web3Modal.connect();
 
-          // Subscribe to provider connection
-          provider.on("connect", (info) => {
-            console.log(info);
-          });
+          const web3 = new Web3(provider);
 
-          // Subscribe to provider disconnection
-          provider.on("disconnect", (error) => {
-            setWalletAddress(null);
-            setSignedIn(false);
-          });
-        } else {
-          // web3 was not ready, wait for it.
-          window.addEventListener(
-            "ethereum#initialized",
-            () => handleConnect(web3.eth),
-            {
-              once: true,
-            }
-          );
-          // If the event is not dispatched by the end of the timeout, the user probably doesn't have MetaMask installed.
-          setTimeout(handleConnect, 3000); // 3 seconds
+          if (web3.eth) {
+            await handleConnect(web3.eth);
+
+            // Subscribe to accounts change
+            provider.on("accountsChanged", (accounts) => {
+              handleAccountsChanged(web3, accounts);
+            });
+
+            // Subscribe to chainId change
+            provider.on("chainChanged", (chainId) => {
+              window.location.reload();
+            });
+
+            // Subscribe to provider connection
+            provider.on("connect", (info) => {
+              console.log(info);
+            });
+
+            // Subscribe to provider disconnection
+            provider.on("disconnect", (error) => {
+              setWalletAddress(null);
+              setSignedIn(false);
+            });
+          } else {
+            // web3 was not ready, wait for it.
+            window.addEventListener(
+              "ethereum#initialized",
+              () => handleConnect(web3.eth),
+              {
+                once: true,
+              }
+            );
+
+            // If the event is not dispatched by the end of the timeout, the user probably doesn't have MetaMask installed.
+            setTimeout(handleConnect, 3000); // 3 seconds
+          }
+
+          console.log("setting web3", web3);
+          setWeb3(web3);
+          setLoading(false);
+        } catch (error) {
+          console.log("error", error);
+          setLoading(null);
         }
-        setWeb3(web3);
-      } catch (error) {
-        setLoading(undefined);
       }
     }
     connect();
-  }, [loading, walletAddress, nftPrice, how_many_nfts, saleStarted]);
+  }, [loading, walletAddress]);
 
-  async function handleConnect(ethereum) {
+  async function handleConnect(web3) {
+    const { eth: ethereum } = web3;
     if (ethereum) {
       // Access the decentralized web!
       let chainId = await ethereum.getChainId();
@@ -96,7 +107,8 @@ export function useWeb3() {
             console.error(error);
           });
     } else {
-      alert("No Ethereum interface injected into browser. Read-only access");
+      if (loading === null)
+        alert("No Ethereum interface injected into browser. Read-only access");
     }
   }
 
@@ -131,8 +143,14 @@ export function useWeb3() {
     const nftPrice = await nftContract.methods.getPrice().call();
     setNftPrice(nftPrice);
   }
+  const handleDisconnect = () => {
+    setLoading(undefined);
+    setSignedIn(false);
+    setWalletAddress(null);
+    setContract(null);
+  };
 
-  return [
+  return {
     web3,
     loading,
     walletAddress,
@@ -140,7 +158,9 @@ export function useWeb3() {
     how_many_nfts,
     saleStarted,
     totalSupply,
-  ];
+    handleConnect,
+    handleDisconnect,
+  };
 }
 
 function handleChainChanged(chainId) {
