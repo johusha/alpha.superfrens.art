@@ -1,4 +1,5 @@
-.Stage, .Stage > div {
+.Stage,
+.Stage > div {
   display: flex;
   justify-content: center;
   overflow: hidden;
@@ -15,4 +16,14 @@
 
 .StageLight {
   pointer-events: none;
+  transition: 3s filter linear, 3s -webkit-filter ease;
+}
+
+.StageLight > .PowerOff {
+  filter: brightness(0%);
+}
+
+.StageLight > .BlockEntry {
+  filter: invert(248%) sepia(444%) saturate(3207%) hue-rotate(351deg)
+    brightness(175%) contrast(159%);
 }

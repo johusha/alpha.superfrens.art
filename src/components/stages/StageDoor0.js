@@ -1,20 +1,32 @@
 import "./StageDoor0.css";
-import React, { createContext, useContext, useState } from "react";
-import Wall from "./door_0/Wall";
-// import Door from './door_0/Door'
-import Light from "./door_0/Light";
+import React, { useContext, useState } from "react";
+import { Web3Context } from "../../App";
 
 const USER_HAS_KEY_TEST = true;
 
-const door_state = {
-  closed: 0,
-  unlocked: 1,
-  open: 2,
+const DOOR_STATES = {
+  no_power: 0,
+  locked: 1,
+  unlocked: 2,
+  open: 3,
 };
 
-const DoorContext = createContext(door_state);
+function StageDoor0() {
+  const { web3, walletAddress } = useContext(Web3Context);
+  const [doorState, setDoorState] = useState(DOOR_STATES.locked);
 
-function StageDoor0({ walletAddress }) {
+  const DoorCode = () => {
+    if (!web3) {
+      return "PowerOff";
+    }
+
+    if (!walletAddress) {
+      return "BlockEntry";
+    }
+
+    return "PowerOn";
+  };
+
   return (
     <div className="Stage">
       <div className="StageStatic">
@@ -23,20 +35,19 @@ function StageDoor0({ walletAddress }) {
         <img src="image/web/door1_right.png" />
       </div>
       <div className="StageDoor">
-        <DoorContext.Provider value={door_state.closed}>
-          <Door />
-        </DoorContext.Provider>
+        <Door doorState={doorState} setDoorState={setDoorState} />
       </div>
       <div className="StageLight">
-        <img src="image/web/Landing_screen1_light.png" />
+        <img
+          className={`${DoorCode()}`}
+          src="image/web/Landing_screen1_light.png"
+        />
       </div>
     </div>
   );
 }
 
-function Door() {
-  const state = useContext(DoorContext);
-  const [doorState, setDoorState] = useState(state);
+function Door({ doorState, setDoorState }) {
   const [frame, setFrame] = useState(0);
 
   let door_frame = 1;
@@ -53,7 +64,7 @@ function Door() {
   };
 
   function handleClick() {
-    if (doorState === door_state.closed) {
+    if (doorState === DOOR_STATES.locked) {
       // 📃TODO: Actually verify the user has a key
       if (USER_HAS_KEY_TEST) {
         animate();
@@ -62,7 +73,7 @@ function Door() {
       }
 
       // Play a sound on unlock
-      setDoorState(door_state.unlocked);
+      setDoorState(DOOR_STATES.unlocked);
     }
   }
 
