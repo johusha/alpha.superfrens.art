@@ -19,11 +19,19 @@
   transition: 3s filter linear, 3s -webkit-filter ease;
 }
 
-.StageLight > .PowerOff {
+.StageLight > .no_power {
   filter: brightness(0%);
 }
 
-.StageLight > .BlockEntry {
+.StageLight > .locked {
   filter: invert(248%) sepia(444%) saturate(3207%) hue-rotate(351deg)
     brightness(175%) contrast(159%);
+}
+
+.StageDoor:hover {
+  opacity: 0.9;
+}
+.StageDoor {
+  height: 1120px;
+  width: 1120px;
 }
