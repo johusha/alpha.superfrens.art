@@ -1,9 +1,10 @@
 import Web3 from "web3";
 import Web3Modal from "web3modal";
 import { useEffect, useState } from "react";
+import { handleChainChanged } from "./lib/Web3Helpers";
 
 export function useWeb3() {
-  const [web3, setWeb3] = useState();
+  const [web3, setWeb3] = useState(undefined);
   // loading can be undefined, null, true, false.
   // undefined is default
   // true for when connecting to web3
@@ -64,8 +65,7 @@ export function useWeb3() {
 
             // Subscribe to provider disconnection
             provider.on("disconnect", (error) => {
-              setWalletAddress(null);
-              setSignedIn(false);
+              handleDisconnect()
             });
           } else {
             // web3 was not ready, wait for it.
@@ -90,8 +90,9 @@ export function useWeb3() {
         }
       }
     }
+
     connect();
-  }, [loading, walletAddress]);
+  }, [loading, walletAddress, contract]);
 
   async function handleConnect(web3) {
     const { eth: ethereum } = web3;
@@ -143,6 +144,7 @@ export function useWeb3() {
     const nftPrice = await nftContract.methods.getPrice().call();
     setNftPrice(nftPrice);
   }
+
   const handleDisconnect = () => {
     setLoading(undefined);
     setSignedIn(false);
@@ -158,40 +160,7 @@ export function useWeb3() {
     how_many_nfts,
     saleStarted,
     totalSupply,
-    handleConnect,
+    handleConnect: () => handleConnect(web3),
     handleDisconnect,
   };
 }
-
-function handleChainChanged(chainId) {
-  if (chainIdToName(chainId) !== "Mainnet") {
-    alert(
-      "You are on " +
-        chainIdToName(chainId) +
-        " network. Change network to mainnet or you won't be able to do anything here"
-    );
-    return false;
-  }
-  return true;
-}
-export const chainIdToName = (chainId) => {
-  // 0x1	1	Ethereum Main Network (Mainnet)
-  // 0x3	3	Ropsten Test Network
-  // 0x4	4	Rinkeby Test Network
-  // 0x5	5	Goerli Test Network
-  // 0x2a	42	Kovan Test Network
-  switch (chainId) {
-    case 1:
-      return "Mainnet";
-    case "0x3":
-      return "Ropsten";
-    case "0x4":
-      return "Rinkeby";
-    case "0x5":
-      return "Goerli";
-    case "0x2a":
-      return "Kovan";
-    default:
-      return false;
-  }
-};

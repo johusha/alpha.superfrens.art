@@ -1,13 +1,14 @@
 import "./WalletConnect.css";
 import "../../animate.css";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { Web3Context } from "../../App";
 
-export function WalletConnect({
-  loading,
-  handleConnect,
-  handleDisconnect,
-  walletAddress,
-}) {
+export function WalletConnect() {
+  const web3Context = useContext(Web3Context);
+
+  const { web3, loading, handleConnect, handleDisconnect, walletAddress } =
+    web3Context;
+
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     // to aid in a transition from loading to not loading,
@@ -21,7 +22,7 @@ export function WalletConnect({
   return (
     <div className={"wallet-connect"}>
       {isLoading === true ? (
-          <div className={"loading"} />
+        <div className={"loading"} />
       ) : walletAddress ? (
         <div
           className={"fade-in-out-partial address-wrapper"}
