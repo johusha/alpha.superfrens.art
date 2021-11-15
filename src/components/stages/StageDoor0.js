@@ -15,6 +15,19 @@ function StageDoor0() {
   const { web3, walletAddress } = useContext(Web3Context);
   const [doorState, setDoorState] = useState(DOOR_STATES.no_power);
 
+  function handleClick() {
+    // can add a loading state to block clicking door again during load.
+
+    if (doorState >= DOOR_STATES.unlocked) {
+      if (doorState === DOOR_STATES.unlocked) {
+        setDoorState(DOOR_STATES.open);
+      }
+      if (doorState === DOOR_STATES.open) {
+        setDoorState(DOOR_STATES.unlocked);
+      }
+    }
+  }
+
   useEffect(() => {
     // no web3 provider connected.
     if (!web3) {
@@ -45,7 +58,7 @@ function StageDoor0() {
         <img src="image/web/door_ALPHA.png" />
         <img src="image/web/door1_right.png" />
       </div>
-      <Door doorState={doorState} setDoorState={setDoorState} />
+      <Door doorState={doorState} handleClick={handleClick} />
 
       <div className="StageLight">
         <img
@@ -57,42 +70,13 @@ function StageDoor0() {
   );
 }
 
-function Door({ doorState, setDoorState }) {
-  const [doorFrame, setDoorFrame] = useState(doorState);
-
-  const openDoor = (frame = 0, callBack) => {
-    callBack(frame);
-    if (frame >= 4) return;
-    setTimeout(() => {
-      openDoor(frame + 1, callBack);
-    }, 350);
-    return false;
-  };
-
-  const closeDoor = (frame = 4, callBack) => {
-    callBack(frame);
-    if (frame <= 0) return;
-    setTimeout(() => {
-      closeDoor(frame - 1, callBack);
-    }, 350);
-  };
-
-  function handleClick() {
-    if (doorState >= DOOR_STATES.unlocked) {
-      if (doorFrame === 0) {
-        openDoor(0, setDoorFrame);
-        setDoorState(DOOR_STATES.open);
-      }
-      if (doorFrame === 4) {
-        closeDoor(4, setDoorFrame);
-        setDoorState(DOOR_STATES.unlocked);
-      }
-    }
-  }
-
+function Door({ doorState, handleClick }) {
   return (
-    <div className="StageDoor" onClick={handleClick}>
-      {doorFrame !== 4 && <img src={`image/web/door${doorFrame}.png`} />}
+    <div className={`StageDoor`} onClick={handleClick}>
+      <img
+        src={`image/web/door0.png`}
+        className={`door ${DOOR_STATES.open === doorState && "doorOpen"}`}
+      />
     </div>
   );
 }
