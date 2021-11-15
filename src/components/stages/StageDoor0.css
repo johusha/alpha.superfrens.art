@@ -11,12 +11,15 @@
 }
 
 .StageStatic {
+  z-index: 3;
+  pointer-events: none;
   margin-left: 9px;
 }
 
 .StageLight {
-  pointer-events: none;
-  transition: 3s filter linear, 3s -webkit-filter ease;
+  z-index: 1;
+  filter: brightness(100%);
+  transition: 3s filter;
 }
 
 .StageLight > .no_power {
@@ -28,10 +31,20 @@
     brightness(175%) contrast(159%);
 }
 
-.StageDoor:hover {
-  opacity: 0.9;
-}
 .StageDoor {
   height: 1120px;
   width: 1120px;
+  z-index: 2;
+  pointer-events: all;
+}
+.door {
+  transform: translateY(0%);
+  transition: transform 3s, opacity 0.5s;
+}
+.door:hover {
+  opacity: 0.9;
+}
+.doorOpen {
+  z-index: -1;
+  transform: translateY(-40%);
 }
