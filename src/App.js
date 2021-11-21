@@ -36,8 +36,8 @@ function App() {
             <div className="CenterStageThing">
 
               {/* 📝 TODO: clickable svg shape overlay */}
-              <Light />
               <Door />
+              <Light />
               <Wall />
 
             </div>

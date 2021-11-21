@@ -22,6 +22,7 @@
     "test": "craco test",
     "eject": "react-scripts eject"
   },
+  "postinstall": "touch ./node_modules/.metadata_never_index",
   "eslintConfig": {
     "extends": [
       "react-app",
