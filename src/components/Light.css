@@ -1,0 +1,4 @@
+.Light {
+  background-image: url('../img/stage_wall_light.png');
+  z-index: 2;
+}

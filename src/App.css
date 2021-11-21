@@ -1,17 +1,92 @@
-body {
-  background-color: black;
-  user-select: none;
-}
-
 html {
-  overflow: scroll;
+  /* Disable scrolling until the door is unlocked */
+  overflow: hidden;
   overflow-x: hidden;
+  background-color: black;
 }
-
 ::-webkit-scrollbar {
-  width: 0; /* Remove scrollbar space */
-  background: transparent; /* Optional: just make scrollbar invisible */
+  width: 0;
+  background: transparent;
 }
 
 .App {
+  --floor-height: 75px;
+  --stage-min-height: 400px;
+  min-width: calc((100vh - var(--floor-height) * 2) * 16/9);
+}
+
+body:-webkit-scrollbar {
+  display: none;
+}
+
+.StageLayer {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-size: contain;
+  background-position: top;
+  background-repeat: no-repeat;
+}
+
+.StageContainer {
+  display: flex;
+  height: calc(100vh - var(--floor-height) * 2);
+  /* min-height: var(--stage-min-height); */
+  margin: auto;
+  justify-content: center;
+}
+
+.CenterStageThing {
+  position: relative;
+  height: 100%;
+  width: calc(100vh - (var(--floor-height)) * 2);
+}
+
+.LeftStageThing, .RightStageThing {
+  height: 100%;
+  width: calc(calc(100vh - (var(--floor-height)) * 2) / 3);
+  
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.LeftStageThing {
+  background-image: url('img/left_stage_thing.png');
+  background-position: right;
+
+}
+
+.RightStageThing {
+  background-image: url('img/right_stage_thing.png');
+  background-position: left;
+}
+
+.FloorTop, .FloorBottom, .Floor {
+  height: var(--floor-height);
+  max-width: calc((100vh - var(--floor-height) * 2) * 16/9);
+  margin: auto;
+  background-image: url('img/transition.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.FloorTop {
+  background-position: bottom;
+}
+
+.Floor {
+  background-position: center;
+}
+
+.FloorBottom {
+  background-position: top;
+}
+
+
+.Content {
+  padding-top: 50px;
+  background-color: black;
+  color: white;
+  text-align: center;
+  margin: auto;
 }

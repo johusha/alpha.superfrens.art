@@ -1,0 +1,4 @@
+.Door {
+  background-image: url('../img/stage_wall_door.png');
+  z-index: 3;
+}

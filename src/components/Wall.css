@@ -1,0 +1,4 @@
+.Wall {
+  background-image: url('../img/stage_wall.png');
+  z-index: 1;
+}
