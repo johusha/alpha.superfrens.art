@@ -1,4 +1,5 @@
 export function handleChainChanged(chainId) {
+  // 📝 TODO: Make this show a 'Switch Network' button in place of connect
   if (chainIdToName(chainId) !== "Mainnet") {
     alert(
       "You are on " +

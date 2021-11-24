@@ -22,7 +22,11 @@ function Door() {
         setDoorState(DOOR_STATES.open);
       }
       if (doorState === DOOR_STATES.open) {
-        setDoorState(DOOR_STATES.unlocked);
+        // setDoorState(DOOR_STATES.unlocked);
+        document.querySelectorAll('.Floor')[0]
+          .scrollIntoView({
+            behavior: 'smooth'
+        })
       }
     }
   }
@@ -34,8 +38,8 @@ function Door() {
       setDoorState(DOOR_STATES.no_power);
       // Web3 provider connected. No address.
     } else {
-      // var audio = new Audio("sound/Dark_Space_Noise_02.mp3");
-      // audio.play();
+      var audio = new Audio("sound/Dark_Space_Noise_02.mp3");
+      audio.play();
     }
     if (!walletAddress) {
       setDoorState(DOOR_STATES.locked);
@@ -76,7 +80,15 @@ function Door() {
 }
 
 function DoorThing({ doorState, handleClick }) {
+  // Enable scrolling when the door is open
   const html = document.querySelector('html')
+  if (doorState === DOOR_STATES.open) {
+    html.style.setProperty('overflow', 'scroll')
+  } else {
+    html.style.setProperty('overflow', 'hidden');
+    window.scrollTo(0,0);
+  }
+  // 📝 TODO: create state manager for page navigation
   html.style.setProperty('overflow', `${doorState === DOOR_STATES.open ? 'scroll' : 'hidden'}`)
   return (
     <div className={`StageLayer Door`} onClick={handleClick}>

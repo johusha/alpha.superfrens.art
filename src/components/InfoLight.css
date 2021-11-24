@@ -1,0 +1,5 @@
+.InfoLight {
+  background-image: url('../img/info_level_light.png');
+  z-index: 3;
+  pointer-events: none;
+}

@@ -1,0 +1,5 @@
+.MintWall {
+  background-image: url('../img/mint_screen.png');
+  z-index: 1;
+  pointer-events: none;
+}

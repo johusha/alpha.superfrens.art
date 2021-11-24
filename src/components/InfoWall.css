@@ -1,0 +1,5 @@
+.InfoWall {
+  background-image: url('../img/info_level.png');
+  z-index: 1;
+  pointer-events: none;
+}
