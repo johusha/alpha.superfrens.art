@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react';
 
 import Door from "./components/Door";
 import Light from "./components/Light";
-import Wall from "./components/Wall";
-import InfoWall from "./components/InfoWall"
-import MintWall from './components/MintWall';
+import Wall from "./components/Wall";        
+import MintWall from './components/MintWall';   
 
 import { useWeb3 } from "./useWeb3";
 import { WalletConnect } from "./components/classes/WalletConnect";
+import InfoWall from './components/InfoWall'
 import InfoLight from './components/InfoLight';
 
 // set up another state manager for navigation
