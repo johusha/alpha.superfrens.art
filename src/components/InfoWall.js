@@ -1,9 +1,20 @@
 import './InfoWall.css'
 
-function InfoWall() {
+import Clickable from './Clickable'
+
+function InfoWall({onClick}) {
 
   return (
-    <div className="StageLayer InfoWall"></div>
+    <>
+      <Clickable onClick={onClick}
+        position={{
+          top: '55%',
+          left: '72%',
+          width: '9%',
+          height: '8%'
+        }} />
+      <div className="StageLayer InfoWall"></div>
+    </>
   )
 }
 

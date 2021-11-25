@@ -1,17 +1,13 @@
 import "./Door.css";
 import React, { useContext, useEffect, useState } from "react";
-import { Web3Context } from "../App";
+import { Web3Context, DoorContext, DOOR_STATES } from "../App";
 
-const DOOR_STATES = {
-  no_power: 0,
-  locked: 1,
-  unlocked: 2,
-  open: 3,
-};
+import Clickable from "./Clickable";
 
 function Door() {
   const { web3, walletAddress } = useContext(Web3Context);
-  const [doorState, setDoorState] = useState(DOOR_STATES.no_power);
+  // const [doorState, setDoorState] = useState(DOOR_STATES.no_power);
+  const { doorState, setDoorState } = useContext(DoorContext)
 
   function handleClick() {
     console.log('click')
@@ -39,6 +35,7 @@ function Door() {
       // Web3 provider connected. No address.
     } else {
       var audio = new Audio("sound/Dark_Space_Noise_02.mp3");
+      audio.loop = true;
       audio.play();
     }
     if (!walletAddress) {
@@ -56,8 +53,10 @@ function Door() {
   );
 
   return (
-    <DoorThing doorState={doorState} handleClick={handleClick} />
-
+    <>
+      
+      <DoorThing handleClick={handleClick} doorState={doorState} />
+    </>
   )
 
   // return (
@@ -81,6 +80,7 @@ function Door() {
 
 function DoorThing({ doorState, handleClick }) {
   // Enable scrolling when the door is open
+  // 📝 TODO: Fix this - or move it to App.js
   const html = document.querySelector('html')
   if (doorState === DOOR_STATES.open) {
     html.style.setProperty('overflow', 'scroll')
@@ -90,14 +90,21 @@ function DoorThing({ doorState, handleClick }) {
   }
   // 📝 TODO: create state manager for page navigation
   html.style.setProperty('overflow', `${doorState === DOOR_STATES.open ? 'scroll' : 'hidden'}`)
-  return (
-    <div className={`StageLayer Door`} onClick={handleClick}>
+  return (<>
+    <Clickable onClick={handleClick}
+          position={{
+            top: '32%',
+            left: '42%',
+            width: '16%',
+            height: '43%'
+          }} />
+    <div className={`StageLayer Door`}>
       <img
         src={`image/web/door0.png`}
         className={`door ${DOOR_STATES.open === doorState && "doorOpen"}`}
       />
     </div>
-  );
+  </>);
 }
 
 export default Door;

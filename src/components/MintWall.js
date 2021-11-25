@@ -1,8 +1,22 @@
 import './MintWall.css'
 
-function MintWall() {
+import Clickable from './Clickable'
+
+
+function MintWall({onClick}) {
+  
+
   return (
-    <div className="StageLayer MintWall"></div>
+    <>
+      <Clickable onClick={onClick}
+        position={{
+          top: '48%',
+          left: '59%',
+          width: '8%',
+          height: '8%'
+        }} />
+      <div className="StageLayer MintWall"></div>
+    </>
   )
 }
 
