@@ -95,3 +95,7 @@ body:-webkit-scrollbar {
   text-align: center;
   margin: auto;
 }
+
+.isHidden {
+  display: none !important;
+}

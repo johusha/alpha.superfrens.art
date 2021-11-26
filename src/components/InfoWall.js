@@ -1,12 +1,20 @@
 import './InfoWall.css'
+import { AppContext } from "../App";
+import React, { useContext } from 'react'
 
 import Clickable from './Clickable'
 
-function InfoWall({onClick}) {
+function InfoWall() {
+
+  const { floorState, setFloorState } = useContext(AppContext)
+
+  const clickHandler = () => {
+    setFloorState(2)
+  }
 
   return (
     <>
-      <Clickable onClick={onClick}
+      <Clickable onClick={clickHandler}
         position={{
           top: '55%',
           left: '72%',

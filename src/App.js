@@ -19,12 +19,13 @@ export const DOOR_STATES = {
   open: 3,
 };
 
-export const DoorContext = createContext({
+export const AppContext = createContext({
   doorState: undefined,
-  setDoorState: undefined
+  setDoorState: undefined,
+  floorState: undefined
 })
 
-export const Web3Context = React.createContext({
+export const Web3Context = createContext({
   web3: undefined,
   loading: undefined,
   walletAddress: null,
@@ -39,7 +40,7 @@ function App() {
     useWeb3();
 
   // Navigation state
-  const [floor, setFloor] = useState(0)
+  const [floorState, setFloorState] = useState(-1)
 
   // Door state
   const [doorState, setDoorState] = useState(DOOR_STATES.no_power)
@@ -52,32 +53,44 @@ function App() {
 
     window.scrollTo(0, 0)
     return () => {
-      console.log('scrolled to the top ser')
-      setFloor(0)
+      
     }
   }, ['👆'])
-
-  const infoWallClick = () => {
-    setFloor(2)
-    const floor2 = document.querySelectorAll('.Floor')[1]
-    // floor2.parentElement.style.setProperty('display', 'block')
-    floor2.scrollIntoView({
-        behavior: 'smooth'
-      })
-  }
 
   const mintButtonClickHandler = () => {
     console.log('mint button clicked!')
   }
 
+  useEffect(() => {
+    console.log({ floorState })
+    if (floorState === 1) {
+      const floor = document.querySelectorAll('.Floor')[0]
+      floor.scrollIntoView({
+        behavior: 'smooth'
+      })
+    } else
+    if (floorState === 2) {
+      const floor2 = document.querySelectorAll('.Floor')[1]
+      floor2.scrollIntoView({
+        behavior: 'smooth'
+      })
+    } else
+    if (floorState === 3) {
+      
+    }
+    return () => {
+      
+    }
+  })
+
   return (
     <Web3Context.Provider value={{ web3, loading, walletAddress, handleConnect, handleDisconnect, }}
     >
       <WalletConnect />
-      <DoorContext.Provider value={{ doorState, setDoorState }}>
+      <AppContext.Provider value={{ doorState, setDoorState, floorState, setFloorState }}>
 
         <div className="App">
-          <section>
+          <div className={`${floorState < 0 ? 'isHidden' : ''}`}>
             <div className="FloorTop" />
 
             <div className="StageContainer">
@@ -94,22 +107,22 @@ function App() {
             </div>
 
 
-          </section>
-          <div className="Floor" />
-          <section>
+            <div className="Floor" />
+          </div>
+          <div className={`${floorState < 1 ? 'isHidden' : ''}`}>
 
             <div className="StageContainer">
               <div className="CenterStageThing">
                 
                 <InfoLight />
-                <InfoWall onClick={infoWallClick}/>
+                <InfoWall />
               </div>
 
             </div>
 
-          </section>
-          <div className="Floor" />
-          <section>
+            <div className="Floor" />
+          </div>
+          <div className={`${floorState < 2 ? 'isHidden' : ''}`}>
 
             <div className="StageContainer">
 
@@ -119,15 +132,15 @@ function App() {
               </div>
 
             </div>
-
             <div className="FloorBottom" />
 
-          </section>
-          <div className="Content" style={{ display: 'none' }}>
+
+          </div>
+          <div className="Content" style={{display: 'none'}}>
             
           </div>
         </div>
-      </DoorContext.Provider>
+      </AppContext.Provider>
     </Web3Context.Provider>
   );
 }

@@ -1,13 +1,13 @@
 import "./Door.css";
 import React, { useContext, useEffect, useState } from "react";
-import { Web3Context, DoorContext, DOOR_STATES } from "../App";
+import { Web3Context, AppContext, DOOR_STATES } from "../App";
 
 import Clickable from "./Clickable";
 
 function Door() {
   const { web3, walletAddress } = useContext(Web3Context);
   // const [doorState, setDoorState] = useState(DOOR_STATES.no_power);
-  const { doorState, setDoorState } = useContext(DoorContext)
+  const { doorState, setDoorState, floorState, setFloorState } = useContext(AppContext)
 
   function handleClick() {
     console.log('click')
@@ -19,10 +19,7 @@ function Door() {
       }
       if (doorState === DOOR_STATES.open) {
         // setDoorState(DOOR_STATES.unlocked);
-        document.querySelectorAll('.Floor')[0]
-          .scrollIntoView({
-            behavior: 'smooth'
-        })
+        setFloorState(1)
       }
     }
   }
@@ -32,6 +29,7 @@ function Door() {
     // no web3 provider connected.
     if (!web3) {
       setDoorState(DOOR_STATES.no_power);
+      setFloorState(0)
       // Web3 provider connected. No address.
     } else {
       var audio = new Audio("sound/Dark_Space_Noise_02.mp3");
@@ -79,17 +77,6 @@ function Door() {
 }
 
 function DoorThing({ doorState, handleClick }) {
-  // Enable scrolling when the door is open
-  // 📝 TODO: Fix this - or move it to App.js
-  const html = document.querySelector('html')
-  if (doorState === DOOR_STATES.open) {
-    html.style.setProperty('overflow', 'scroll')
-  } else {
-    html.style.setProperty('overflow', 'hidden');
-    window.scrollTo(0,0);
-  }
-  // 📝 TODO: create state manager for page navigation
-  html.style.setProperty('overflow', `${doorState === DOOR_STATES.open ? 'scroll' : 'hidden'}`)
   return (<>
     <Clickable onClick={handleClick}
           position={{
