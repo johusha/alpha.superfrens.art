@@ -1,0 +1,5 @@
+.Clickable {
+  position: absolute;
+  z-index: 9999;
+  cursor: pointer;
+}

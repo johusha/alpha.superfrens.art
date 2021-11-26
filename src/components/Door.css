@@ -1,0 +1,49 @@
+.Door {
+  /* background-image: url('../img/stage_wall_door.png'); */
+  z-index: 0;
+}
+
+.Stage,
+.Stage > div {
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.Stage > div {
+  position: absolute;
+  min-width: 1120px;
+}
+
+.StageStatic {
+  z-index: 3;
+  pointer-events: none;
+  margin-left: 9px;
+}
+
+.StageLight {
+  z-index: 1;
+  filter: brightness(100%);
+  transition: 3s filter;
+}
+
+.StageLight > .no_power {
+  filter: brightness(0%);
+}
+
+.StageLight > .locked {
+  filter: invert(248%) sepia(444%) saturate(3207%) hue-rotate(351deg)
+    brightness(175%) contrast(159%);
+}
+
+.door {
+  transform: translateY(0%);
+  transition: transform 3s, opacity 0.5s;
+}
+.door:hover {
+  opacity: 0.9;
+}
+.doorOpen {
+  z-index: -1;
+  transform: translateY(-40%);
+}
