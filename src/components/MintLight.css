@@ -1,0 +1,5 @@
+.MintLight {
+  background-image: url('../img/mint_light.png');
+  z-index: 3;
+  pointer-events: none;
+}

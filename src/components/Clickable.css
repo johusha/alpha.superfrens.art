@@ -1,5 +1,4 @@
 .Clickable {
   position: absolute;
-  border: 1px solid red;
   z-index: 9999;
 }

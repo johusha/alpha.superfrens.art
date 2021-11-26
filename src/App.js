@@ -10,10 +10,7 @@ import { useWeb3 } from "./useWeb3";
 import { WalletConnect } from "./components/classes/WalletConnect";
 import InfoWall from './components/InfoWall'
 import InfoLight from './components/InfoLight';
-
-export const FLOOR_STATES = {
-
-}
+import MintLight from './components/MintLight';
 
 export const DOOR_STATES = {
   no_power: 0,
@@ -69,14 +66,6 @@ function App() {
       })
   }
 
-  const doorClickHandler = () => {
-    console.log('door clicked!')
-  }
-
-  const infoButtonClickHandler = () => {
-    console.log('info button clicked!')
-  }
-
   const mintButtonClickHandler = () => {
     console.log('mint button clicked!')
   }
@@ -86,7 +75,6 @@ function App() {
     >
       <WalletConnect />
       <DoorContext.Provider value={{ doorState, setDoorState }}>
-
 
         <div className="App">
           <section>
@@ -111,7 +99,6 @@ function App() {
           <section>
 
             <div className="StageContainer">
-
               <div className="CenterStageThing">
                 
                 <InfoLight />
@@ -127,7 +114,7 @@ function App() {
             <div className="StageContainer">
 
               <div className="CenterStageThing">
-                
+                <MintLight />
                 <MintWall onClick={mintButtonClickHandler} />
               </div>
 
