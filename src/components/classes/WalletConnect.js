@@ -1,15 +1,14 @@
-import "./WalletConnect.css";
-import "../../animate.css";
-import { useContext, useEffect, useState } from "react";
-import { Web3Context } from "../../App";
+import './WalletConnect.css'
+import '../../animate.css'
+import { useContext, useEffect, useState } from 'react'
+import { Web3Context } from '../../App'
 
 export function WalletConnect() {
-  const web3Context = useContext(Web3Context);
+  const web3Context = useContext(Web3Context)
 
-  const { web3, loading, handleConnect, handleDisconnect, walletAddress } =
-    web3Context;
+  const { web3, loading, handleConnect, handleDisconnect, walletAddress } = web3Context
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
     // to aid in a transition from loading to not loading,
     if (loading === false)
@@ -17,24 +16,21 @@ export function WalletConnect() {
         setIsLoading(false);
       }, 1000);
     // set timeout to 0 to remove
-  }, [loading]);
+  }, [loading])
 
   return (
-    <div className={"wallet-connect"}>
+    <div className={'wallet-connect'}>
       {isLoading === true ? (
-        <div className={"loading"} />
+        <div className={'loading'} />
       ) : walletAddress ? (
-        <div
-          className={"fade-in-out-partial address-wrapper"}
-          onClick={handleDisconnect}
-        >
-          Connected Address <div className={"address"}>{walletAddress}</div>
+        <div className={'fade-in-out-partial address-wrapper'} onClick={handleDisconnect}>
+          Connected Address <div className={'address'}>{walletAddress}</div>
         </div>
       ) : (
-        <button className={"button"} onClick={handleConnect}>
+        <button className={'button'} onClick={handleConnect}>
           Connect
         </button>
       )}
     </div>
-  );
+  )
 }

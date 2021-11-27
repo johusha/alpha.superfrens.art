@@ -6,7 +6,7 @@ import { handleChainChanged } from "./lib/Web3Helpers";
 export function useWeb3() {
   const [web3, setWeb3] = useState(undefined);
   // loading can be undefined, null, true, false.
-  // undefined is default
+  // undefined is default - will trigger a reconnect to web3
   // true for when connecting to web3
   // false for when finished connecting to web3
   // null for when an error occurred when connecting to web3
@@ -146,7 +146,7 @@ export function useWeb3() {
   }
 
   const handleDisconnect = () => {
-    setLoading(undefined);
+    setLoading(false);
     setSignedIn(false);
     setWalletAddress(null);
     setContract(null);

@@ -1,6 +1,8 @@
-import './App.css'
+import './App.scss'
 import React, { createContext, useEffect, useState } from 'react'
-
+import logo_back_splash from './img/logo_back_splash.png'
+import talk_to_us_on_discord_first_door from './img/talk_to_us_on_discord_first_door.png'
+import talk_to_us_on_discord_mint_page from './img/talk_to_us_on_discord_mint_page.png'
 import Door from './components/Door'
 import Wall from './components/Wall'
 import MintWall from './components/MintWall'
@@ -8,9 +10,8 @@ import MintWall from './components/MintWall'
 import { useWeb3 } from './useWeb3'
 import { WalletConnect } from './components/classes/WalletConnect'
 import InfoWall from './components/InfoWall'
-import talk_to_us_on_discord_first_door from './img/talk_to_us_on_discord_first_door.png'
-import talk_to_us_on_discord_mint_page from './img/talk_to_us_on_discord_mint_page.png'
 import { ImageLink } from './components/ImageLink'
+import LogoBackSplash from './components/LogoBackSplash'
 
 export const DOOR_STATES = {
   no_power: 0,
@@ -78,7 +79,10 @@ function App() {
       <WalletConnect />
       <AppContext.Provider value={{ doorState, setDoorState, floorState, setFloorState }}>
         <div className="App">
-          <div className={`${floorState < 0 ? 'isHidden' : ''}`}>
+          <div className="StageContainer overlay">
+            <LogoBackSplash srcImg={logo_back_splash} disabled={false} loading={Web3ContextData.loading} />
+          </div>
+          <div className={`${floorState < 0 ? 'isHidden' : ''} `}>
             <div className="FloorTop" />
 
             <div className="StageContainer">
