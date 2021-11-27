@@ -17,13 +17,14 @@ function Door() {
     if (doorState >= DOOR_STATES.unlocked) {
       if (doorState === DOOR_STATES.unlocked) {
         setDoorState(DOOR_STATES.open);
-      }
-      if (doorState === DOOR_STATES.open) {
-        // setDoorState(DOOR_STATES.unlocked);
         var audio = new Audio("sound/Dark_Space_Noise_02.mp3");
         audio.loop = true;
         audio.play();
         setFloorState(1);
+      }
+      if (doorState === DOOR_STATES.open) {
+        // setDoorState(DOOR_STATES.unlocked);
+        
       }
     }
   }
