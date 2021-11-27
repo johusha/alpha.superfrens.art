@@ -1,12 +1,12 @@
-import "./Door.css";
-import React, { useContext, useEffect, useState } from "react";
-import { Web3Context, AppContext, DOOR_STATES } from "../App";
+import './Door.css'
+import React, { useContext, useEffect, useState } from 'react'
+import { Web3Context, AppContext, DOOR_STATES } from '../App'
 
-import Clickable from "./Clickable";
-import LightThing from "./LightThing";
+import Clickable from './Clickable'
+import LightThing from './LightThing'
 
 function Door() {
-  const { web3, walletAddress } = useContext(Web3Context);
+  const { web3, walletAddress } = useContext(Web3Context)
   // const [doorState, setDoorState] = useState(DOOR_STATES.no_power);
   const { doorState, setDoorState, floorState, setFloorState } = useContext(AppContext)
 
@@ -16,23 +16,23 @@ function Door() {
 
     if (doorState >= DOOR_STATES.unlocked) {
       if (doorState === DOOR_STATES.unlocked) {
-        setDoorState(DOOR_STATES.open);
-        var audio = new Audio("sound/Dark_Space_Noise_02.mp3");
-        audio.loop = true;
-        audio.play();
+        setDoorState(DOOR_STATES.open)
+        var audio = new Audio('sound/Dark_Space_Noise_02.mp3')
+        audio.loop = true
+        audio.play()
       }
       if (doorState === DOOR_STATES.open) {
         // setDoorState(DOOR_STATES.unlocked);
-        setFloorState(1);
+        setFloorState(1)
       }
     }
   }
 
   useEffect(() => {
-    console.log({doorState})
+    console.log({ doorState })
     // no web3 provider connected.
     if (!web3) {
-      setDoorState(DOOR_STATES.no_power);
+      setDoorState(DOOR_STATES.no_power)
       setFloorState(0)
       // Web3 provider connected. No address.
     } else {
@@ -41,12 +41,12 @@ function Door() {
       // audio.play();
     }
     if (!walletAddress) {
-      setDoorState(DOOR_STATES.locked);
+      setDoorState(DOOR_STATES.locked)
     } else {
       // 📃TODO: Actually verify the user has a key
-      setDoorState(DOOR_STATES.unlocked);
+      setDoorState(DOOR_STATES.unlocked)
     }
-  }, [web3, walletAddress]);
+  }, [web3, walletAddress])
 
   // const lightClassName = Object.keys(DOOR_STATES).find(
   //   // returns DOOR_STATES key name @ value of doorState
@@ -54,9 +54,7 @@ function Door() {
   //   (key) => DOOR_STATES[key] === doorState
   // );
 
-  const lightParams = {
-
-  }
+  const lightParams = {}
 
   return (
     <>
@@ -85,22 +83,23 @@ function Door() {
 }
 
 function DoorThing({ doorState, handleClick }) {
-  return (<>
-    <Clickable onClick={handleClick}
-      position={{
-        top: '32%',
-        left: '42%',
-        width: '16%',
-        height: '43%'
-      }} />
-    <LightThing src="image/web/Landing_screen1_light.png" />
-    <div className={`StageLayer Door`}>
-      <img
-        src={`image/web/door0.png`}
-        className={`door ${DOOR_STATES.open === doorState && "doorOpen"}`}
+  return (
+    <>
+      <Clickable
+        onClick={handleClick}
+        position={{
+          top: '32%',
+          left: '42%',
+          width: '16%',
+          height: '43%',
+        }}
       />
-    </div>
-  </>);
+      <LightThing src="image/web/Landing_screen1_light.png" />
+      <div className={`StageLayer Door`}>
+        <img src={`image/web/door0.png`} className={`door ${DOOR_STATES.open === doorState && 'doorOpen'}`} />
+      </div>
+    </>
+  )
 }
 
-export default Door;
+export default Door
