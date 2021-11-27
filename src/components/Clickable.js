@@ -1,29 +1,34 @@
-import './Clickable.css'
-import { useContext } from 'react'
-import { AppContext, DOOR_STATES } from '../App'
+import "./Clickable.css";
+import { useContext } from "react";
+import { AppContext, DOOR_STATES } from "../App";
 
-function Clickable({ position, onClick }) {
+function Clickable({ position, className, onClick, debug = false }) {
+  const { top, left, width, height } = position;
 
-  const {top, left, width, height} = position
+  const debugStyle = debug ? { background: "red", opacity: 0.6 } : {};
 
-  const { doorState } = useContext(AppContext)
+  const { doorState } = useContext(AppContext);
 
   const clickHandler = () => {
-    console.log({doorState})
     if (doorState !== DOOR_STATES.unlocked && doorState !== DOOR_STATES.open) {
-      return console.log('nah not doin it. The door is not unlocked')
+      return console.log("nah not doin it. The door is not unlocked");
     }
-
-    onClick()
-  }
+    onClick();
+  };
 
   return (
     <div
-      className="Clickable"
-      style={{top, left, width, height}}
+      className={`Clickable ${className}`}
+      style={{
+        top,
+        left,
+        width,
+        height,
+        ...debugStyle,
+      }}
       onClick={clickHandler}
-    ></div>
-  )
+    />
+  );
 }
 
-export default Clickable
+export default Clickable;
