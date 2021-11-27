@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Web3Context, AppContext, DOOR_STATES } from "../App";
 
 import Clickable from "./Clickable";
+import LightThing from "./LightThing";
 
 function Door() {
   const { web3, walletAddress } = useContext(Web3Context);
@@ -19,7 +20,10 @@ function Door() {
       }
       if (doorState === DOOR_STATES.open) {
         // setDoorState(DOOR_STATES.unlocked);
-        setFloorState(1)
+        var audio = new Audio("sound/Dark_Space_Noise_02.mp3");
+        audio.loop = true;
+        audio.play();
+        setFloorState(1);
       }
     }
   }
@@ -32,9 +36,9 @@ function Door() {
       setFloorState(0)
       // Web3 provider connected. No address.
     } else {
-      var audio = new Audio("sound/Dark_Space_Noise_02.mp3");
-      audio.loop = true;
-      audio.play();
+      // var audio = new Audio("sound/Dark_Space_Noise_02.mp3");
+      // audio.loop = true;
+      // audio.play();
     }
     if (!walletAddress) {
       setDoorState(DOOR_STATES.locked);
@@ -44,15 +48,19 @@ function Door() {
     }
   }, [web3, walletAddress]);
 
-  const lightClassName = Object.keys(DOOR_STATES).find(
-    // returns DOOR_STATES key name @ value of doorState
-    // one of no_power, locked, unlocked, open
-    (key) => DOOR_STATES[key] === doorState
-  );
+  // const lightClassName = Object.keys(DOOR_STATES).find(
+  //   // returns DOOR_STATES key name @ value of doorState
+  //   // one of no_power, locked, unlocked, open
+  //   (key) => DOOR_STATES[key] === doorState
+  // );
+
+  const lightParams = {
+
+  }
 
   return (
     <>
-      
+      <LightThing position={lightParams} />
       <DoorThing handleClick={handleClick} doorState={doorState} />
     </>
   )
@@ -79,12 +87,13 @@ function Door() {
 function DoorThing({ doorState, handleClick }) {
   return (<>
     <Clickable onClick={handleClick}
-          position={{
-            top: '32%',
-            left: '42%',
-            width: '16%',
-            height: '43%'
-          }} />
+      position={{
+        top: '32%',
+        left: '42%',
+        width: '16%',
+        height: '43%'
+      }} />
+    <LightThing src="image/web/Landing_screen1_light.png" />
     <div className={`StageLayer Door`}>
       <img
         src={`image/web/door0.png`}

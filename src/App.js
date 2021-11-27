@@ -98,7 +98,7 @@ function App() {
 
               <div className="CenterStageThing">
                 <Door />
-                <Light />
+                {/* <Light /> */}
                 <Wall />
 
               </div>
@@ -114,7 +114,7 @@ function App() {
             <div className="StageContainer">
               <div className="CenterStageThing">
                 
-                <InfoLight />
+                {/* <InfoLight /> */}
                 <InfoWall />
               </div>
 
@@ -127,7 +127,7 @@ function App() {
             <div className="StageContainer">
 
               <div className="CenterStageThing">
-                <MintLight />
+                {/* <MintLight /> */}
                 <MintWall onClick={mintButtonClickHandler} />
               </div>
 

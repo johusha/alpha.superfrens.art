@@ -3,6 +3,7 @@ import { AppContext } from "../App";
 import React, { useContext } from 'react'
 
 import Clickable from './Clickable'
+import LightThing from './LightThing';
 
 function InfoWall() {
 
@@ -21,6 +22,7 @@ function InfoWall() {
           width: '9%',
           height: '8%'
         }} />
+      <LightThing src="image/web/info_level_light.png" />
       <div className="StageLayer InfoWall"></div>
     </>
   )

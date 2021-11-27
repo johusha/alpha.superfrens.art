@@ -1,6 +1,7 @@
 import './MintWall.css'
 
 import Clickable from './Clickable'
+import LightThing from './LightThing'
 
 
 function MintWall({onClick}) {
@@ -15,6 +16,7 @@ function MintWall({onClick}) {
           width: '8%',
           height: '8%'
         }} />
+      <LightThing src="image/web/mint_light.png" />
       <div className="StageLayer MintWall"></div>
     </>
   )

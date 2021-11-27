@@ -21,7 +21,7 @@
   margin-left: 9px;
 }
 
-.StageLight {
+/* .StageLight {
   z-index: 1;
   filter: brightness(100%);
   transition: 3s filter;
@@ -34,7 +34,7 @@
 .StageLight > .locked {
   filter: invert(248%) sepia(444%) saturate(3207%) hue-rotate(351deg)
     brightness(175%) contrast(159%);
-}
+} */
 
 .door {
   transform: translateY(0%);

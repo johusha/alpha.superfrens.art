@@ -1,0 +1,14 @@
+.LightThing {
+  z-index: 1;
+  filter: brightness(100%);
+  transition: 3s filter;
+}
+
+.LightThing > .no_power {
+  filter: brightness(20%);
+}
+
+.LightThing > .locked {
+  filter: invert(248%) sepia(444%) saturate(3207%) hue-rotate(351deg)
+    brightness(175%) contrast(159%);
+}
