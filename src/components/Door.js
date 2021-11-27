@@ -4,6 +4,7 @@ import { Web3Context, AppContext, DOOR_STATES } from "../App";
 
 import Clickable from "./Clickable";
 import LightThing from "./LightThing";
+import ClickySticker from "./ClickySticker";
 
 function Door() {
   const { web3, walletAddress } = useContext(Web3Context);
@@ -54,13 +55,17 @@ function Door() {
   //   (key) => DOOR_STATES[key] === doorState
   // );
 
-  const lightParams = {
-
+  const stickerParams = {
+    top: '0%',
+    left: '0%',
+    width: '25%',
+    height: '25%'
   }
 
   return (
     <>
-      <LightThing position={lightParams} />
+      <LightThing />
+      <ClickySticker position={stickerParams} />
       <DoorThing handleClick={handleClick} doorState={doorState} />
     </>
   )
