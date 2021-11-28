@@ -1,12 +1,7 @@
 import Web3 from 'web3'
 import Web3Modal from 'web3modal'
 import { useEffect, useState } from 'react'
-import {
-  chainIdToName,
-  ContractAddressesByChainName,
-  handleChainChanged,
-  sleep,
-} from './lib/Web3Helpers'
+import { chainIdToName, ContractAddressesByChainName, handleChainChanged, sleep } from './lib/Web3Helpers'
 
 import FrenKeysABI from './components/ABI/FrenKeys.json'
 import SwapperABI from './components/ABI/Swapper.json'
@@ -25,11 +20,6 @@ export function useWeb3() {
 
   // INFO FROM SMART Contract
   const [balance, setBalance] = useState(0)
-
-  useEffect(() => {
-    console.log(frensKeysInstance?.methods)
-    console.log(swapperInstance?.methods)
-  }, [frensKeysInstance, swapperInstance])
 
   useEffect(() => {
     async function connect() {
