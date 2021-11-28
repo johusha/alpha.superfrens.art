@@ -1,7 +1,12 @@
 import Web3 from 'web3'
 import Web3Modal from 'web3modal'
 import { useEffect, useState } from 'react'
-import {handleChainChanged, sleep} from './lib/Web3Helpers'
+import {
+  chainIdToName,
+  ContractAddressesByChainName,
+  handleChainChanged,
+  sleep,
+} from './lib/Web3Helpers'
 
 import FrenKeysABI from './components/ABI/FrenKeys.json'
 import SwapperABI from './components/ABI/Swapper.json'
@@ -18,13 +23,7 @@ export function useWeb3() {
   const [frensKeysInstance, setFrensKeysInstance] = useState(null)
   const [swapperInstance, setSwapperInstance] = useState(null)
 
-  // FOR MINTING
-  const [how_many_nfts, set_how_many_nfts] = useState(1)
-
   // INFO FROM SMART Contract
-
-  const [totalSupply, setTotalSupply] = useState(0)
-  const [totalMinted, setTotalMinted] = useState(0)
   const [balance, setBalance] = useState(0)
 
   useEffect(() => {
@@ -97,36 +96,44 @@ export function useWeb3() {
   }, [loading, walletAddress, swapperInstance, frensKeysInstance])
 
   async function swap() {
-    const expectedBlockTime = 1000;
+    const expectedBlockTime = 1000
 
-    if (!frensKeysInstance || !swapperInstance || !walletAddress || loading === true) return false
-    console.log(frensKeysInstance.methods)
-    console.log(swapperInstance)
+    if (!frensKeysInstance || !swapperInstance || !walletAddress || loading === true) {
+      throw new Error('Something went wrong with initialization of wallet or contract.')
+    }
 
-    let swapOwner = swapperInstance.options.address + ""
-    console.log('swapOwner', swapOwner)
-    // console.log("Submitted transaction with hash: ", transactonHash)
-    frensKeysInstance.methods.approve(swapOwner, 4).send({ from: walletAddress }, async function(error, transactonHash) {
-      console.log("Submitted transaction with hash: ", transactonHash)
+    // swapper contract address needing approval
+    const swapperContractAddress = swapperInstance.options.address
+
+    // get the wallets first available key
+    const tokenId = await frensKeysInstance.methods.tokenOfOwnerByIndex(walletAddress, 0).call()
+
+    if (!tokenId) throw new Error('Address does not own any keys')
+
+    // check if the swapper contract address has been approved already
+    const approvedAddress = await frensKeysInstance.methods.getApproved(tokenId).call()
+    const isAlreadyApproved = approvedAddress === swapperContractAddress
+
+    console.log('isAlreadyApproved:', isAlreadyApproved)
+    // ensure the approved address matches the swapper contract address
+    if (!isAlreadyApproved) {
+      const approveResponse = await frensKeysInstance.methods.approve(swapperContractAddress, tokenId).send()
       let transactionReceipt = null
-      while (transactionReceipt == null) { // Waiting expectedBlockTime until the transaction is mined
-        transactionReceipt = await web3.eth.getTransactionReceipt(transactonHash);
+      while (transactionReceipt == null) {
+        // Waiting expectedBlockTime until the transaction is mined
+        transactionReceipt = await web3.eth.getTransactionReceipt(approveResponse.transactionHash)
         await sleep(expectedBlockTime)
       }
-      console.log("Got the transaction receipt: ", transactionReceipt)
-      let final_balance = await swapperInstance.methods.swap(4).send({from:swapOwner})
+      console.log('Got the transaction receipt: ', transactionReceipt)
+    }
 
-      console.log('Ending balance is:', final_balance);
-    });
-
+    return await swapperInstance.methods.swap(tokenId).send()
   }
 
   async function getBalance() {
     console.log('starting fetch balance')
     if (!frensKeysInstance || !swapperInstance || !walletAddress || loading === true) return false
-    const balanceResp = await frensKeysInstance.methods.balanceOf(walletAddress).call()
-
-    return balanceResp
+    return await frensKeysInstance.methods.balanceOf(walletAddress).call()
   }
 
   async function handleConnect(web3) {
@@ -162,29 +169,32 @@ export function useWeb3() {
   }
 
   async function callContractData(web3, wallet) {
+    let chainId = await web3.getChainId()
     // Load Key Contract ABI
-    const FrenKeysContract = new web3.Contract(FrenKeysABI, '0xE4fd38670733F927018eA4bDa88459BDeF0A40Cb')
+    const FrenKeysContract = new web3.Contract(
+      FrenKeysABI,
+      ContractAddressesByChainName[chainIdToName(chainId)].FrenKeysContractAddress,
+      {
+        from: wallet,
+      }
+    )
 
     // Load Swapper Contract ABI
-    const SwapperContract = new web3.Contract(SwapperABI, '0xE4fd38670733F927018eA4bDa88459BDeF0A40Cb')
+    const SwapperContract = new web3.Contract(
+      SwapperABI,
+      ContractAddressesByChainName[chainIdToName(chainId)].SwapperContractAddress,
+      {
+        from: wallet,
+      }
+    )
 
     setFrensKeysInstance(FrenKeysContract)
     setSwapperInstance(SwapperContract)
 
-    const totalSupply = await FrenKeysContract.methods.totalSupply().call()
-    setTotalSupply(totalSupply)
-
-    const totalMinted = await FrenKeysContract.methods.totalMinted().call()
-
-    setTotalMinted(totalMinted)
-
+    // number of keys
     const balanceResp = await FrenKeysContract.methods.balanceOf(wallet).call()
 
     setBalance(balanceResp)
-
-    const maxSupply = await FrenKeysContract.methods.maxSupply().call()
-
-    const owner = await FrenKeysContract.methods.owner().call()
   }
 
   const handleDisconnect = () => {
@@ -198,9 +208,6 @@ export function useWeb3() {
     web3,
     loading,
     walletAddress,
-    how_many_nfts,
-    totalSupply,
-    totalMinted,
     swap,
     getBalance,
     balance,
