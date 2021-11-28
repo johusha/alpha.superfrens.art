@@ -1,6 +1,6 @@
 import './Door.css'
 import React, { useContext, useEffect, useState } from 'react'
-import { Web3Context, AppContext, DOOR_STATES } from '../App'
+import { Web3Context, AppContext, DOOR_STATES, LOADING_STATES } from '../App'
 
 import Clickable from './Clickable'
 import LightThing from './LightThing'
@@ -59,7 +59,7 @@ function Door() {
   return (
     <>
       <LightThing position={lightParams} />
-      <DoorThing handleClick={handleClick} doorState={doorState} />
+      <DoorThing handleClick={handleClick} doorState={doorState}/>
     </>
   )
 
@@ -82,7 +82,7 @@ function Door() {
   // );
 }
 
-function DoorThing({ doorState, handleClick }) {
+function DoorThing({ doorState, handleClick, loadedHandler }) {
   return (
     <>
       <Clickable

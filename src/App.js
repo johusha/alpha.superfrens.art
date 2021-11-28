@@ -20,6 +20,14 @@ export const DOOR_STATES = {
   open: 3,
 }
 
+export const LOADING_STATES = {
+  loading: 0,
+  preload: 1,
+  main: 2,
+  extras: 3,
+  done: 4
+}
+
 export const AppContext = createContext({
   doorState: undefined,
   setDoorState: undefined,
@@ -74,13 +82,15 @@ function App() {
     // trigger when floorState changes
   }, [floorState])
 
+  const [loadedState, setLoadedState] = useState(LOADING_STATES.loading)
+
   return (
     <Web3Context.Provider value={Web3ContextData}>
       <WalletConnect />
-      <AppContext.Provider value={{ doorState, setDoorState, floorState, setFloorState }}>
+      <AppContext.Provider value={{ doorState, setDoorState, floorState, setFloorState, loadedState, setLoadedState }}>
         <div className="App">
           <div className="StageContainer overlay">
-            <LogoBackSplash srcImg={logo_back_splash} disabled={false} loading={Web3ContextData.loading} />
+            <LogoBackSplash srcImg={logo_back_splash} disabled={false} />
           </div>
           <div className={`${floorState < 0 ? 'isHidden' : ''} `}>
             <div className="FloorTop" />
