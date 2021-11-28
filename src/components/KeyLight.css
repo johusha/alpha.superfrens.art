@@ -1,0 +1,31 @@
+.KeyLight, .keyBackground {
+  position: absolute;
+  z-index: 10;
+  width: 10%;
+  left: 58%;
+  top: 26%;
+  z-index: 3;
+}
+
+.keyBackground {
+  width: 50%;
+  height: 50%;
+  top: 24%;
+  left: 36%;
+  z-index: -1;
+}
+
+.KeyLight img {
+  
+}
+
+.KeyLight > .keyContainer {
+}
+
+.keyRed {
+  background-color: red;
+}
+
+.keyGreen {
+  background-color: green;
+}

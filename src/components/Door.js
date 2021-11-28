@@ -4,9 +4,10 @@ import { Web3Context, AppContext, DOOR_STATES } from '../App'
 
 import Clickable from './Clickable'
 import LightThing from './LightThing'
+import KeyLight from './KeyLight'
 
 function Door() {
-  const { web3, walletAddress } = useContext(Web3Context)
+  const { web3, walletAddress, balance } = useContext(Web3Context)
   // const [doorState, setDoorState] = useState(DOOR_STATES.no_power);
   const { doorState, setDoorState, floorState, setFloorState } = useContext(AppContext)
 
@@ -16,6 +17,8 @@ function Door() {
 
     if (doorState >= DOOR_STATES.unlocked) {
       if (doorState === DOOR_STATES.unlocked) {
+        if (balance < 1) { return console.log('user has no keys')}
+
         setDoorState(DOOR_STATES.open)
         var audio = new Audio('sound/Dark_Space_Noise_02.mp3')
         audio.loop = true
@@ -43,8 +46,7 @@ function Door() {
     if (!walletAddress) {
       setDoorState(DOOR_STATES.locked)
     } else {
-      // 📃TODO: Actually verify the user has a key
-      setDoorState(DOOR_STATES.unlocked)
+        setDoorState(DOOR_STATES.unlocked)
     }
   }, [web3, walletAddress])
 
@@ -58,6 +60,7 @@ function Door() {
 
   return (
     <>
+      <KeyLight />
       <LightThing position={lightParams} />
       <DoorThing handleClick={handleClick} doorState={doorState} />
     </>
