@@ -39,8 +39,8 @@ export const ContractAddressesByChainName = {
     FrenKeysContractAddress: '0xE4fd38670733F927018eA4bDa88459BDeF0A40Cb',
   },
   Mainnet: {
-    SwapperContractAddress: '',
-    FrenKeysContractAddress: '',
+    SwapperContractAddress: '0x032Ddbab8571Bc5A007bAEF1762F1241187b1CE7',
+    FrenKeysContractAddress: '0xE4fd38670733F927018eA4bDa88459BDeF0A40Cb',
   },
 }
 
