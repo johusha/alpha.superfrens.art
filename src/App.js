@@ -52,8 +52,12 @@ function App() {
     window.scrollTo(0, 0)
   }, ['👆'])
 
-  const mintButtonClickHandler = () => {
+  const mintButtonClickHandler = async () => {
     console.log('mint button clicked!')
+
+    let swapResponse = await Web3ContextData.swap()
+
+    console.log(swapResponse)
   }
 
   useEffect(() => {

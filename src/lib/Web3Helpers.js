@@ -31,3 +31,8 @@ export const chainIdToName = (chainId) => {
       return false;
   }
 };
+
+
+export function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
