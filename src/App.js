@@ -43,6 +43,8 @@ function App() {
 
   // Door state
   const [doorState, setDoorState] = useState(DOOR_STATES.no_power)
+  const [isMinting, setIsMinting] = useState(false)
+  const [mintResults, setMintResults] = useState(false)
 
   // Make sure the screen is scrolled to the top at start
   useEffect(() => {
@@ -53,11 +55,11 @@ function App() {
   }, ['👆'])
 
   const mintButtonClickHandler = async () => {
-    console.log('mint button clicked!')
-
+    //todo: display an effect based on minting being true
+    setIsMinting(true)
     let swapResponse = await Web3ContextData.swap()
-
-    console.log(swapResponse)
+    setIsMinting(false)
+    setMintResults(swapResponse)
   }
 
   useEffect(() => {
@@ -126,7 +128,7 @@ function App() {
           </div>
           <div className={`${floorState < 2 ? 'isHidden' : ''}`}>
             <div className="StageContainer">
-              <div className="CenterStageThing">
+              <div className={`CenterStageThing ${isMinting ? 'isMinting' : ''}`}>
                 {/* <MintLight /> */}
                 <MintWall onClick={mintButtonClickHandler} />
                 <ImageLink
@@ -140,6 +142,11 @@ function App() {
                     height: '8%',
                   }}
                 />
+                {mintResults?.status && (
+                  <div className={'overlay'}>
+                    <div className="circle-sb">"Freedom at last!"</div>
+                  </div>
+                )}
               </div>
             </div>
             <div className="FloorBottom" />

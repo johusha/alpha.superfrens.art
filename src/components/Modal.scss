@@ -20,6 +20,7 @@
 }
 /* The Close Button */
 .modal-close {
+  z-index: 8;
   color: #aaa;
   float: right;
   font-size: 28px;
