@@ -1,0 +1,14 @@
+#logo_back_splash {
+  //position: relative;
+  z-index: 9;
+  background-color: black;
+  pointer-events: none;
+  mix-blend-mode: unset;
+}
+
+#logo_back_splash.finished-loading {
+  opacity: 0;
+  transition: all 1.5s ease-out 1s;
+  pointer-events: none;
+  mix-blend-mode: unset;
+}

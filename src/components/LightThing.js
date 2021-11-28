@@ -13,7 +13,7 @@ function LightThing({src}) {
   );
 
   return (
-    <div className="StageLayer LightThing" style={{zIndex: '99999', pointerEvents: 'none'}}>
+    <div className="StageLayer LightThing" style={{zIndex: '6', pointerEvents: 'none'}}>
       <img
         className={`${lightClassName}`}
         src={src}
