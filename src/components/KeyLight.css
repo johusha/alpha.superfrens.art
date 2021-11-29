@@ -1,3 +1,13 @@
+
+.KeyLight{
+  display: flex;
+  /*height: calc(100vh - var(--floor-height) * 2);*/
+  /* min-height: var(--stage-min-height); */
+  margin: auto;
+  justify-content: center;
+  overflow: hidden;
+}
+
 .KeyLight, .keyBackground {
   position: absolute;
   z-index: 10;
@@ -8,7 +18,7 @@
 }
 
 .keyBackground {
-  width: 50%;
+  width: 25%;
   height: 50%;
   top: 24%;
   left: 36%;
@@ -16,7 +26,7 @@
 }
 
 .KeyLight img {
-  
+
 }
 
 .KeyLight > .keyContainer {

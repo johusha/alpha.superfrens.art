@@ -1,6 +1,10 @@
 .Door {
-  /* background-image: url('../img/stage_wall_door.png'); */
-  z-index: 0;
+  display: flex;
+  height: calc(100vh - var(--floor-height) * 2);
+  /* min-height: var(--stage-min-height); */
+  margin: auto;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .Stage,
