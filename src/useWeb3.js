@@ -33,9 +33,12 @@ export function useWeb3() {
           const web3Modal = new Web3Modal({
             network: 'mainnet', // optional
             cacheProvider: true, // optional
+
             providerOptions, // required
           })
-
+          if (web3Modal.cachedProvider) {
+            await web3Modal.connect();
+          }
           const provider = await web3Modal.connect()
 
           const web3 = new Web3(provider)
@@ -45,7 +48,7 @@ export function useWeb3() {
 
             // Subscribe to accounts change
             provider.on('accountsChanged', (accounts) => {
-              handleAccountsChanged(web3, accounts)
+              handleAccountsChanged(web3.eth, accounts)
             })
 
             // Subscribe to chainId change
@@ -144,7 +147,7 @@ export function useWeb3() {
     }
   }
 
-  async function handleAccountsChanged(web3, accounts) {
+  async function handleAccountsChanged(web3Eth, accounts) {
     if (accounts.length === 0)
       // MetaMask is locked or the user has not connected any accounts
       alert('No Addresses Available in MetaMask')
@@ -154,29 +157,26 @@ export function useWeb3() {
     if (accounts[0] !== walletAddress) {
       let wallet = accounts[0]
       setWalletAddress(wallet)
-      await callContractData(web3, wallet)
+      await callContractData(web3Eth, wallet)
     }
   }
 
-  async function callContractData(web3, wallet) {
-    let chainId = await web3.getChainId()
-    // Load Key Contract ABI
-    const FrenKeysContract = new web3.Contract(
-      FrenKeysABI,
-      ContractAddressesByChainName[chainIdToName(chainId)].FrenKeysContractAddress,
-      {
-        from: wallet,
-      }
-    )
+  async function callContractData(web3Eth, wallet) {
+    let chainId = await web3Eth.getChainId()
 
-    // Load Swapper Contract ABI
-    const SwapperContract = new web3.Contract(
-      SwapperABI,
-      ContractAddressesByChainName[chainIdToName(chainId)].SwapperContractAddress,
-      {
-        from: wallet,
-      }
-    )
+    // get mainnet or rinkeby addresses - will fail for other.
+    const Chain = ContractAddressesByChainName[chainIdToName(chainId)]
+
+    const FrenKeysContractAddress = Chain.FrenKeysContractAddress
+    const SwapperContractAddress = Chain.SwapperContractAddress
+
+    console.log('ContractAddressesByChainName', ContractAddressesByChainName)
+    console.log('FrenKeysContractAddress', FrenKeysContractAddress)
+    console.log('SwapperContractAddress', SwapperContractAddress)
+
+    // Connect 2 FrenKey & Swapper Contract ABI's
+    const FrenKeysContract = new web3Eth.Contract(FrenKeysABI, FrenKeysContractAddress, { from: wallet })
+    const SwapperContract = new web3Eth.Contract(SwapperABI, SwapperContractAddress, { from: wallet })
 
     setFrensKeysInstance(FrenKeysContract)
     setSwapperInstance(SwapperContract)
@@ -188,6 +188,8 @@ export function useWeb3() {
   }
 
   const handleDisconnect = () => {
+    // use undefined to reload web3
+    // use false to just disconnect
     setLoading(false)
     setSignedIn(false)
     setWalletAddress(null)

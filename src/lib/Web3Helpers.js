@@ -11,22 +11,19 @@ export function handleChainChanged(chainId) {
   return true
 }
 export const chainIdToName = (chainId) => {
+  console.log('switched to chain id', chainId)
   // 0x1	1	Ethereum Main Network (Mainnet)
   // 0x3	3	Ropsten Test Network
   // 0x4	4	Rinkeby Test Network
   // 0x5	5	Goerli Test Network
   // 0x2a	42	Kovan Test Network
   switch (chainId) {
+    // supported
     case 1:
       return 'Mainnet'
-    case '0x3':
-      return 'Ropsten'
     case 4:
       return 'Rinkeby'
-    case '0x5':
-      return 'Goerli'
-    case '0x2a':
-      return 'Kovan'
+    // not supported
     default:
       return false
   }
@@ -43,7 +40,6 @@ export const ContractAddressesByChainName = {
     FrenKeysContractAddress: '0xE4fd38670733F927018eA4bDa88459BDeF0A40Cb',
   },
 }
-
 
 export function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms))
