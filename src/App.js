@@ -3,6 +3,7 @@ import React, { createContext, useEffect, useState } from 'react'
 import logo_back_splash from './img/logo_back_splash.png'
 import talk_to_us_on_discord_first_door from './img/talk_to_us_on_discord_first_door.png'
 import talk_to_us_on_discord_mint_page from './img/talk_to_us_on_discord_mint_page.png'
+import danger_thing from './img/danger.png'
 import Door from './components/Door'
 import Wall from './components/Wall'
 import MintWall from './components/MintWall'
@@ -121,6 +122,17 @@ function App() {
               <div className="CenterStageThing">
                 {/* <InfoLight /> */}
                 <InfoWall />
+                <ImageLink
+                  id={'danger_thing'}
+                  imgSrc={danger_thing}
+                  href={'/deck.pdf'}
+                  position={{
+                    top: '25%',
+                    left: '8%',
+                    width: '15%',
+                    height: '4%',
+                  }}
+                />
               </div>
             </div>
 

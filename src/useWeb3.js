@@ -160,6 +160,8 @@ export function useWeb3() {
 
   async function callContractData(web3, wallet) {
     let chainId = await web3.getChainId()
+    // 📝 TODO: needs to fallback to mainnet if the chain ID can't get got
+    
     // Load Key Contract ABI
     const FrenKeysContract = new web3.Contract(
       FrenKeysABI,
